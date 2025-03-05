@@ -58,8 +58,27 @@ export class AuthService {
       })
     );
   }
-   forgetPassword(user: any): Observable<any> {
+  forgetPassword(user: any): Observable<any> {
     return this.http.post<any>(this.apiUrl +"/password/forgot" , user,{ responseType: 'text' as 'json' }).pipe(
+      map(response => {
+        return response;
+      }),
+      catchError(error => {
+        let errorMessage = 'An error occurred. Please try again.';
+        if (error.error) {
+          try {
+            const errorObj = typeof error.error === 'string' ? JSON.parse(error.error) : error.error;
+            errorMessage = errorObj.error || errorMessage;
+          } catch (e) {
+            console.error('Error parsing response:', e);
+          }
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+  resetPassword(ResetPassword: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl +"/password/reset" , ResetPassword,{ responseType: 'text' as 'json' }).pipe(
       map(response => {
         return response;
       }),
