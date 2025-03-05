@@ -32,7 +32,7 @@ export class AuthService {
       })
     );
   }
-/*  login(user: any): Observable<any> {
+  login(user: any): Observable<any> {
     return this.http.post<any>(this.apiUrl + "/login", user, { responseType: 'json'}).pipe(
       map(response => {
         this.storeUserInfo(response);
@@ -58,8 +58,7 @@ export class AuthService {
       })
     );
   }
-
-  forgetPassword(user: any): Observable<any> {
+  /* forgetPassword(user: any): Observable<any> {
     return this.http.post<any>(this.apiUrl +"/password/forgot" , user,{ responseType: 'text' as 'json' }).pipe(
       map(response => {
         return response;
