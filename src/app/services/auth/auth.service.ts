@@ -58,7 +58,7 @@ export class AuthService {
       })
     );
   }
-  /* forgetPassword(user: any): Observable<any> {
+   forgetPassword(user: any): Observable<any> {
     return this.http.post<any>(this.apiUrl +"/password/forgot" , user,{ responseType: 'text' as 'json' }).pipe(
       map(response => {
         return response;
@@ -76,7 +76,7 @@ export class AuthService {
         return throwError(() => new Error(errorMessage));
       })
     );
-  }*/
+  }
 
   private storeUserInfo(token: any): void {
     localStorage.setItem('tokenUser', JSON.stringify(token));
