@@ -23,6 +23,9 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent ,
     canActivate: [redirectIfAuthenticateGuard]
   },
+  { path: 'profile', component: ResetPasswordComponent ,
+    canActivate: [redirectIfAuthenticateGuard]
+  },
 
 
 ];
