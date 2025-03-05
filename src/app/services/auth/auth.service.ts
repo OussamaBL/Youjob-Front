@@ -87,4 +87,8 @@ export class AuthService {
     localStorage.removeItem('tokenUser');
     localStorage.removeItem('isAuthenticated');
   }
+
+  isAuthenticated(): boolean {
+    return localStorage.getItem('isAuthenticated') === 'true';
+  }
 }
