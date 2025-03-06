@@ -24,7 +24,7 @@ export const routes: Routes = [
     canActivate: [redirectIfAuthenticateGuard]
   },
   { path: 'profile', component: ResetPasswordComponent ,
-    canActivate: [redirectIfAuthenticateGuard]
+  /*  canActivate: [redirectIfAuthenticateGuard]*/
   },
 
 

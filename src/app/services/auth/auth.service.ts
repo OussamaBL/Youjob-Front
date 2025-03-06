@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
+import {jwtDecode} from "jwt-decode";
+import { User } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:8081/api/auth';
   http=inject(HttpClient);
   errorMessage="";
+
   constructor() {}
 
   signup(user: any): Observable<any> {
@@ -110,4 +113,47 @@ export class AuthService {
   isAuthenticated(): boolean {
     return localStorage.getItem('isAuthenticated') === 'true';
   }
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getUsernameFromToken(): string | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken.username; // Extract the username
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+        return null;
+      }
+    }
+    return null;
+  }
+  // Fetch user data using username
+  getUserData(): Observable<User> {
+    const username = this.getUsernameFromToken();
+    if (username) {
+      return this.http.get<User>(`${this.apiUrl}/user/fetch/${username}`).pipe(
+        catchError(error => {
+          let errorMessage = 'An error occurred. Please try again.';
+          if (error.status === 400 && error.error) {
+            if (typeof error.error === 'object') {
+              errorMessage = Object.values(error.error).join('\n');
+            }
+          } else if (error.error) {
+            try {
+              errorMessage = typeof error.error === 'string' ? JSON.parse(error.error).error : error.error.error;
+            } catch (e) {
+              console.error('Error parsing response:', e);
+            }
+          }
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+    }
+    return throwError(() => new Error('User not authenticated or token is invalid.'));
+  }
+
+
 }
