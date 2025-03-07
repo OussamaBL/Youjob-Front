@@ -155,7 +155,6 @@ export class AuthService {
     }
     return throwError(() => new Error('User not authenticated or token is invalid.'));
   }
-
   updateUser(user: any): Observable<any> {
     return this.http.put<any>(`http://localhost:8081/api/user/profile/${user.id}`, user, { responseType: 'json'}).pipe(
           map(response => {
