@@ -4,8 +4,10 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 import {redirectIfAuthenticateGuard} from "./guards/redirect-if-authenticate.guard";
+import {authGuard} from "./guards/auth.guard";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -22,6 +24,9 @@ export const routes: Routes = [
   },
   { path: 'reset-password', component: ResetPasswordComponent ,
     canActivate: [redirectIfAuthenticateGuard]
+  },
+  { path: 'profile', component: ProfileComponent ,
+    canActivate: [authGuard]
   },
 
 

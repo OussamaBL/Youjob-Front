@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import {Observable, catchError, map, throwError, switchMap} from 'rxjs';
+import {jwtDecode} from "jwt-decode";
+import { User } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:8081/api/auth';
   http=inject(HttpClient);
   errorMessage="";
+
   constructor() {}
 
   signup(user: any): Observable<any> {
@@ -98,7 +101,7 @@ export class AuthService {
   }
 
   private storeUserInfo(token: any): void {
-    localStorage.setItem('tokenUser', JSON.stringify(token));
+    localStorage.setItem('tokenUser', JSON.stringify( token ));
     localStorage.setItem('isAuthenticated', 'true');
   }
 
@@ -106,8 +109,76 @@ export class AuthService {
     localStorage.removeItem('tokenUser');
     localStorage.removeItem('isAuthenticated');
   }
-
   isAuthenticated(): boolean {
     return localStorage.getItem('isAuthenticated') === 'true';
   }
+  getToken(): string | null {
+    const tokenData = localStorage.getItem('tokenUser');
+    return tokenData ? JSON.parse(tokenData).token : null;
+  }
+  getUsernameFromToken(): string | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken.username; // Extract the username
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+        return null;
+      }
+    }
+    return null;
+  }
+  getUserData(): Observable<User> {
+    const username = this.getUsernameFromToken();
+    if (username) {
+      return this.http.get<User>(`http://localhost:8081/api/user/fetch/${username}`).pipe(
+        map(response => {
+          return response;
+        }),
+        catchError(error => {
+          let errorMessage = 'An error occurred. Please try again.';
+          if (error.status === 400 && error.error) {
+            if (typeof error.error === 'object') {
+              errorMessage = Object.values(error.error).join('\n');
+            }
+          } else if (error.error) {
+            try {
+              errorMessage = typeof error.error === 'string' ? JSON.parse(error.error).error : error.error.error;
+            } catch (e) {
+              console.error('Error parsing response:', e);
+            }
+          }
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+    }
+    return throwError(() => new Error('User not authenticated or token is invalid.'));
+  }
+
+  updateUser(user: any): Observable<any> {
+    return this.http.put<any>(`http://localhost:8081/api/user/profile/${user.id}`, user, { responseType: 'json'}).pipe(
+          map(response => {
+            return response;
+          }),
+          catchError(error => {
+            let errorMessage = 'An error occurred. Please try again.';
+            if (error.status === 400 && error.error) {
+              if (typeof error.error === 'object') {
+                errorMessage = Object.values(error.error).join('\n');
+              }
+            } else if (error.error) {
+              try {
+                errorMessage = typeof error.error === 'string' ? JSON.parse(error.error).error : error.error.error;
+              } catch (e) {
+                console.error('Error parsing response:', e);
+              }
+            }
+            return throwError(() => new Error(errorMessage));
+          })
+        );
+
+
+  }
+
 }

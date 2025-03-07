@@ -23,7 +23,7 @@
       </div>
 
       <!-- Desktop Action Buttons -->
-      <div class="hidden sm:ml-6 sm:flex sm:items-center">
+      <div *ngIf="!isAuthenticate()" class="hidden sm:ml-6 sm:flex sm:items-center">
         <a
           routerLink="/login"
           class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">
@@ -35,7 +35,19 @@
           Register
         </a>
       </div>
+      <div *ngIf="isAuthenticate()" class="hidden sm:ml-6 sm:flex sm:items-center">
+        <a
+          routerLink="/profile"
+          class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">
+          Profile
+        </a>
+        <a
+          (click)="logOut()"
+          class="ml-4 bg-blue-600 text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">
+          Log out
+        </a>
 
+      </div>
       <!-- Mobile Menu Button -->
       <div class="-mr-2 flex items-center sm:hidden">
         <button
@@ -69,7 +81,19 @@
       </a>
     </div>
     <div class="pt-4 pb-3 border-t border-gray-200">
-      <div class="space-y-1">
+      <div *ngIf="!isAuthenticate()" class="space-y-1">
+        <a
+          routerLink="/profile"
+          class="block px-4 py-2 text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition-colors duration-300">
+          Profile
+        </a>
+        <a
+          (click)="logOut()"
+          class="block px-4 py-2 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
+          Log out
+        </a>
+      </div>
+      <div *ngIf="isAuthenticate()" class="space-y-1">
         <a
           routerLink="/login"
           class="block px-4 py-2 text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition-colors duration-300">
