@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../../services/auth/auth.service";
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-navbar',
   imports: [RouterModule, NgIf],
@@ -17,6 +18,12 @@ export class NavbarComponent {
     this.menuOpen = !this.menuOpen;
   }
   logOut() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Logout successfully.',
+      confirmButtonText: 'OK'
+    });
     this.authService.logout();
     this.router.navigate(['/login']);
   }

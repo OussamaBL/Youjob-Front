@@ -2,8 +2,9 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  name: string;
   role: string;
-  phone_number?: string;
+  phoneNumber?: string;
   address?: string;
   vatNumber:number;
   skills:string;
