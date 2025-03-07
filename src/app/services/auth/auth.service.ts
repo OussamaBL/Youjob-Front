@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, catchError, map, throwError, switchMap} from 'rxjs';
 import {jwtDecode} from "jwt-decode";
-import { User } from '../../models/user.model';
+import { User } from '../../components/reset-password/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -180,4 +180,14 @@ export class AuthService {
 
   }
 
+  getRole(): Observable<string | null> {
+    return this.getUserData().pipe(
+      map((user) => user.role)
+    );
+  }
+  getId(): Observable<number | null> {
+    return this.getUserData().pipe(
+      map((user) => user.id)
+    );
+  }
 }
