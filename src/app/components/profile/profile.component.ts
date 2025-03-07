@@ -4,7 +4,7 @@ import {FooterComponent} from "../layout/footer/footer.component";
 import {AuthService} from "../../services/auth/auth.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {User} from "../../models/user.model";
+import {User} from "../reset-password/user.model";
 import Swal from "sweetalert2";
 import {NgIf} from "@angular/common";
 @Component({

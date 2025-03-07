@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, catchError, map, throwError, switchMap} from 'rxjs';
 import {jwtDecode} from "jwt-decode";
-import { User } from '../../models/user.model';
+import { User } from '../../components/reset-password/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -155,7 +155,6 @@ export class AuthService {
     }
     return throwError(() => new Error('User not authenticated or token is invalid.'));
   }
-
   updateUser(user: any): Observable<any> {
     return this.http.put<any>(`http://localhost:8081/api/user/profile/${user.id}`, user, { responseType: 'json'}).pipe(
           map(response => {
@@ -181,4 +180,14 @@ export class AuthService {
 
   }
 
+  getRole(): Observable<string | null> {
+    return this.getUserData().pipe(
+      map((user) => user.role)
+    );
+  }
+  getId(): Observable<number | null> {
+    return this.getUserData().pipe(
+      map((user) => user.id)
+    );
+  }
 }
