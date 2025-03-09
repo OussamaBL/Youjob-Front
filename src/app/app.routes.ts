@@ -5,11 +5,13 @@ import { LoginComponent } from './components/login/login.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AnnonceComponent } from './components/annonce/annonce.component';
+import { AnnounceComponent } from './components/annonce/announce.component';
+import { CreateAnnounceComponent } from './components/create-annonce/create-announce.component';
 
 import {redirectIfAuthenticateGuard} from "./guards/redirect-if-authenticate.guard";
 import {authGuard} from "./guards/auth.guard";
 import {annonceGuard} from "./guards/annonce.guard";
+import {UpdateAnnounceComponent} from "./components/update-annonce/update-announce.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -30,7 +32,13 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent ,
     canActivate: [authGuard]
   },
-  { path: 'announce', component: AnnonceComponent ,
+  { path: 'announce', component: AnnounceComponent ,
+    canActivate: [annonceGuard]
+  },
+  { path: 'createAnnounce', component: CreateAnnounceComponent ,
+    canActivate: [annonceGuard]
+  },
+  { path: 'updateAnnounce/:id', component: UpdateAnnounceComponent ,
     canActivate: [annonceGuard]
   },
 

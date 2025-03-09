@@ -1,27 +1,30 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Annonce} from "../../models/annonce.model";
 import {AnnonceService} from "../../services/annonce/annonce.service";
-import Swal from "sweetalert2";
+import Sal from "sweetalert2";
 import {NavbarComponent} from "../layout/navbar/navbar.component";
 import {FooterComponent} from "../layout/footer/footer.component";
-import {NgForOf, NgIf} from "@angular/common";
-import {Router} from "@angular/router";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {Router,RouterModule} from "@angular/router";
 import {AuthService} from "../../services/auth/auth.service";
 
 @Component({
-  selector: 'app-annonce',
+  selector: 'app-announce',
   standalone: true,
   imports: [
     NavbarComponent,
     FooterComponent,
     NgForOf,
-    NgIf
+    NgIf,
+    DatePipe,
+    NgClass,
+    RouterModule
   ],
-  templateUrl: './annonce.component.html',
-  styleUrl: './annonce.component.css'
+  templateUrl: './announce.component.html',
+  styleUrl: './announce.component.css'
 })
-export class AnnonceComponent {
-  annonces: Annonce[] = [];
+export class AnnounceComponent implements OnInit{
+  announces: Annonce[] = [];
   totalPages = 0;
   totalElements = 0;
   page = 0;
@@ -29,7 +32,7 @@ export class AnnonceComponent {
   userId: number | null = null;
   loading: boolean = false; // Add a loading state
 
-  constructor(private annonceService: AnnonceService, private router: Router, private authService: AuthService) {}
+  constructor(private announceService: AnnonceService, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.getId().subscribe((id) => {
@@ -37,10 +40,10 @@ export class AnnonceComponent {
         this.userId = id;
         this.fetchAnnounces();
       } else {
-        Swal.fire({
+        Sal.fire({
           icon: 'error',
           title: 'Unauthorized',
-          text: 'You must be logged in to view annonces.',
+          text: 'You must be logged in to view announces.',
         });
       }
     });
@@ -48,15 +51,15 @@ export class AnnonceComponent {
 
   fetchAnnounces(): void {
     this.loading = true; // Set loading to true when fetching data
-    this.annonceService.fetchAnnounces(this.userId, this.page, this.size).subscribe({
+    this.announceService.fetchAnnounces(this.userId, this.page, this.size).subscribe({
       next: (data) => {
-        this.annonces = data.content;
+        this.announces = data.content;
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.loading = false; // Set loading to false after data is fetched
       },
       error: (err) => {
-        Swal.fire({
+        Sal.fire({
           icon: 'error',
           title: 'Oops...',
           text: err.message,
@@ -81,8 +84,8 @@ export class AnnonceComponent {
   }
 
   // Add a deleteAnnonce method
-  deleteAnnonce(id: number): void {
-    Swal.fire({
+  deleteAnnounce(id: number): void {
+    Sal.fire({
       title: 'Are you sure?',
       text: 'Do you want to delete this annonce?',
       icon: 'warning',
@@ -91,13 +94,14 @@ export class AnnonceComponent {
       cancelButtonText: 'No, cancel!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.annonceService.deleteAnnonce(id).subscribe({
+        console.log(id);
+        this.announceService.deleteAnnounce(id).subscribe({
           next: () => {
-            Swal.fire('Deleted!', 'Your annonce has been deleted.', 'success');
+            Sal.fire('Deleted!', 'Your annonce has been deleted.', 'success');
             this.fetchAnnounces();
           },
           error: (err) => {
-            Swal.fire('Error', 'There was an issue deleting the annonce.', 'error');
+            Sal.fire('Error', 'There was an issue deleting the annonce.'+err.message, 'error');
           },
         });
       }
