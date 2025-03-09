@@ -38,8 +38,29 @@ export class AnnonceService {
   fetchAnnounces(userId: number | null, page: number, size: number): Observable<PaginatedResponse<Annonce>> {
     return this.http.get<PaginatedResponse<Annonce>>(`${this.apiUrl}/AnnonceUser/${userId}?page=${page}&size=${size}`);
   }
-  deleteAnnonce(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+  deleteAnnounce(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`,{ responseType: 'json' });
+  }
+
+  getAnnonceById(id: string | null) :Observable<Annonce>{
+    return this.http.get<Annonce>(`${this.apiUrl}/get/${id}`);
+  }
+
+  updateAnnounce(id: string | null, announce: Partial<Annonce>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/edit/${id}`, announce,{ responseType: 'json' }).pipe(
+      catchError(error => {
+        let errorMessage = 'An error occurred. Please try again.';
+        if (error.error) {
+          try {
+            const errorObj = typeof error.error === 'string' ? JSON.parse(error.error) : error.error;
+            errorMessage = errorObj.error || errorMessage;
+          } catch (e) {
+            console.error('Error parsing response:', e);
+          }
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
 }
