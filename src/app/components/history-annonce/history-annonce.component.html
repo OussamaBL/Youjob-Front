@@ -1,0 +1,71 @@
+<app-navbar />
+<div class="container mx-auto p-6">
+  <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Archived Annonces</h1>
+
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center py-10">
+    <div class="spinner-border animate-spin h-10 w-10 border-t-4 border-blue-500 rounded-full"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading" class="overflow-x-auto shadow-lg rounded-lg">
+    <table class="w-full border-collapse bg-white shadow-md rounded-lg">
+      <thead class="bg-blue-500 text-white uppercase text-sm font-semibold">
+      <tr>
+        <th class="p-3 text-left">Title</th>
+        <th class="p-3 text-left">Description</th>
+        <th class="p-3 text-left">Category</th>
+        <th class="p-3 text-left">Price</th>
+        <th class="p-3 text-left">Location</th>
+        <th class="p-3 text-left">Created Date</th>
+        <th class="p-3 text-left">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let annonce of announces" class="border-b hover:bg-gray-100">
+        <td class="p-3">{{ annonce.title }}</td>
+        <td class="p-3 truncate max-w-xs">{{ annonce.description }}</td>
+        <td class="p-3">{{ annonce.category }}</td>
+        <td class="p-3 font-semibold text-blue-600">{{ annonce.price }} $</td>
+        <td class="p-3">{{ annonce.location || 'N/A' }}</td>
+        <td class="p-3">{{ annonce.createdDate | date:'medium' }}</td>
+        <td class="p-3">
+            <span
+              class="px-2 py-1 rounded text-xs font-bold"
+              [ngClass]="{
+                'bg-green-100 text-green-600': annonce.status === 'ACTIVE',
+                'bg-red-100 text-red-600': annonce.status === 'INACTIVE'
+              }"
+            >
+              {{ annonce.status }}
+            </span>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!loading" class="flex justify-between items-center mt-6">
+    <button
+      (click)="prevPage()"
+      [disabled]="page === 0"
+      class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+    >
+      Previous
+    </button>
+
+    <span class="text-lg font-semibold"> Page {{ page + 1 }} of {{ totalPages }} </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page >= totalPages - 1"
+      class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+</div>
+<app-footer />
