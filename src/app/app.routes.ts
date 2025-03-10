@@ -12,6 +12,7 @@ import {redirectIfAuthenticateGuard} from "./guards/redirect-if-authenticate.gua
 import {authGuard} from "./guards/auth.guard";
 import {annonceGuard} from "./guards/annonce.guard";
 import {UpdateAnnounceComponent} from "./components/update-annonce/update-announce.component";
+import {HistoryAnnounceComponent} from "./components/history-annonce/history-annonce.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -39,6 +40,9 @@ export const routes: Routes = [
     canActivate: [annonceGuard]
   },
   { path: 'updateAnnounce/:id', component: UpdateAnnounceComponent ,
+    canActivate: [annonceGuard]
+  },
+  { path: 'historyAnnounce', component: HistoryAnnounceComponent ,
     canActivate: [annonceGuard]
   },
 

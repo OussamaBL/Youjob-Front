@@ -62,5 +62,7 @@ export class AnnonceService {
       })
     );
   }
-
+  fetchHistoryAnnounce(userId: number | null, page: number, size: number): Observable<PaginatedResponse<Annonce>> {
+    return this.http.get<PaginatedResponse<Annonce>>(`http://localhost:8081/api/user/annonce/history/${userId}?page=${page}&size=${size}`);
+  }
 }
