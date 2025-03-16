@@ -24,7 +24,11 @@
       </thead>
       <tbody>
       <tr *ngFor="let annonce of announces" class="border-b hover:bg-gray-100">
-        <td class="p-3">{{ annonce.title }}</td>
+        <td class="p-3">
+          <a [routerLink]="['/announcePage', annonce.id]">
+            {{ annonce.title }}
+          </a>
+        </td>
         <td class="p-3 truncate max-w-xs">{{ annonce.description }}</td>
         <td class="p-3">{{ annonce.category }}</td>
         <td class="p-3 font-semibold text-blue-600">{{ annonce.price }} $</td>

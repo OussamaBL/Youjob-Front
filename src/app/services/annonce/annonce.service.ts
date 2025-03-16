@@ -8,7 +8,7 @@ import {PaginatedResponse} from "../../models/PaginatedResponse.model";
   providedIn: 'root'
 })
 export class AnnonceService {
-  private apiUrl = 'http://localhost:8081/api/annonce';
+  private apiUrl = 'http://localhost:8081/api/announce';
   http=inject(HttpClient);
   errorMessage="";
   constructor() { }
@@ -36,14 +36,15 @@ export class AnnonceService {
   }
 
   fetchAnnounces(userId: number | null, page: number, size: number): Observable<PaginatedResponse<Annonce>> {
-    return this.http.get<PaginatedResponse<Annonce>>(`${this.apiUrl}/AnnonceUser/${userId}?page=${page}&size=${size}`);
+    return this.http.get<PaginatedResponse<Annonce>>(`${this.apiUrl}/AnnounceUser/${userId}?page=${page}&size=${size}`);
   }
   deleteAnnounce(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`,{ responseType: 'json' });
   }
 
-  getAnnonceById(id: string | null) :Observable<Annonce>{
-    return this.http.get<Annonce>(`${this.apiUrl}/get/${id}`);
+  getAnnounceById(id: string | null) :Observable<Annonce>{
+    console.log(id);
+    return this.http.get<Annonce>(`http://localhost:8081/api/announce/get/${id}`);
   }
 
   updateAnnounce(id: string | null, announce: Partial<Annonce>): Observable<any> {
@@ -65,4 +66,6 @@ export class AnnonceService {
   fetchHistoryAnnounce(userId: number | null, page: number, size: number): Observable<PaginatedResponse<Annonce>> {
     return this.http.get<PaginatedResponse<Annonce>>(`http://localhost:8081/api/user/annonce/history/${userId}?page=${page}&size=${size}`);
   }
+
+
 }

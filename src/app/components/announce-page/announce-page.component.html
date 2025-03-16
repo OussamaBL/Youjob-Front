@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div *ngIf="loading" class="text-center">
+    <p>Loading...</p>
+  </div>
+
+  <div *ngIf="!loading && announce">
+    <h2>{{ announce.title }}</h2>
+    <p><strong>Description:</strong> {{ announce.description }}</p>
+    <p><strong>Category:</strong> {{ announce.category }}</p>
+    <p><strong>Location:</strong> {{ announce.location }}</p>
+
+    <hr />
+
+    <h4>Created By:</h4>
+    <p><strong>Name:</strong> {{ announce.createdBy?.name }}</p>
+    <p><strong>Email:</strong> {{ announce.createdBy?.email }}</p>
+    <p><strong>Phone:</strong> {{ announce.createdBy?.phoneNumber }}</p>
+
+    <hr />
+
+    <!-- Consult Button -->
+    <button
+      class="btn btn-primary"
+      (click)="openConsultPopup()"
+      [disabled]="!user || user.role !== 'HANDYMAN'"
+    >
+      Consult
+    </button>
+
+    <!-- Message for non-handyman users -->
+    <p *ngIf="user && user.role !== 'HANDYMAN'" class="text-danger mt-2">
+      You should be a handyman to consult an announce.
+    </p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+</div>
+
+<app-footer></app-footer>
