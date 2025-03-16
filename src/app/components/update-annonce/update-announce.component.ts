@@ -45,7 +45,7 @@ export class UpdateAnnounceComponent implements OnInit{
 
     this.announceId = this.route.snapshot.paramMap.get('id');
     if (this.announceId) {
-      this.announceService.getAnnonceById(this.announceId).subscribe({
+      this.announceService.getAnnounceById(this.announceId).subscribe({
         next: (announce: Annonce) => {
           this.announceForm.patchValue({
             title: announce.title,
