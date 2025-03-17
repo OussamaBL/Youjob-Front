@@ -66,6 +66,21 @@ export class AnnonceService {
   fetchHistoryAnnounce(userId: number | null, page: number, size: number): Observable<PaginatedResponse<Annonce>> {
     return this.http.get<PaginatedResponse<Annonce>>(`http://localhost:8081/api/user/annonce/history/${userId}?page=${page}&size=${size}`);
   }
+  fetchDisposedAnnounce(page: number, size: number): Observable<PaginatedResponse<Annonce>> {
+    return this.http.get<PaginatedResponse<Annonce>>(`${this.apiUrl}/dispo?page=${page - 1}&size=${size}`);
+  }
+  fetchFilterCategoryLocationAnnounce(category: string | null, location: string | null, page: number, size: number): Observable<PaginatedResponse<Annonce>> {
+    const filter = {
+      category: category || "",
+      location: location || ""
+    };
+    console.log(filter);
+    return this.http.post<PaginatedResponse<Annonce>>(
+      `${this.apiUrl}/filterbyCategoryLocation?page=${page - 1}&size=${size}`,
+      filter
+    );
+  }
+
 
 
 }
