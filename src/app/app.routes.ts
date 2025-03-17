@@ -14,6 +14,7 @@ import {annonceGuard} from "./guards/annonce.guard";
 import {UpdateAnnounceComponent} from "./components/update-annonce/update-announce.component";
 import {HistoryAnnounceComponent} from "./components/history-annonce/history-annonce.component";
 import {AnnouncePageComponent} from "./components/announce-page/announce-page.component";
+import {AnnounceListComponentComponent} from "./components/annonce-list-component/announce-list-component.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -47,6 +48,9 @@ export const routes: Routes = [
     canActivate: [annonceGuard]
   },
   { path: 'announcePage/:id', component: AnnouncePageComponent ,
+    /*canActivate: [annonceGuard]*/
+  },
+  { path: 'announceSearch', component: AnnounceListComponentComponent ,
     /*canActivate: [annonceGuard]*/
   },
 
