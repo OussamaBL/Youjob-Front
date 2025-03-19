@@ -15,6 +15,7 @@ import {UpdateAnnounceComponent} from "./components/update-annonce/update-announ
 import {HistoryAnnounceComponent} from "./components/history-annonce/history-annonce.component";
 import {AnnouncePageComponent} from "./components/announce-page/announce-page.component";
 import {AnnounceListComponentComponent} from "./components/annonce-list-component/announce-list-component.component";
+import {ConsultationComponent} from "./components/consultation/consultation.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -53,6 +54,8 @@ export const routes: Routes = [
   { path: 'announceSearch', component: AnnounceListComponentComponent ,
     /*canActivate: [annonceGuard]*/
   },
-
+  { path: 'consultation/:id', component: ConsultationComponent ,
+    canActivate: [annonceGuard]
+  },
 
 ];
