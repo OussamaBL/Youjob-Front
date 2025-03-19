@@ -62,9 +62,13 @@
           >
             Delete
           </button>
-          <a [routerLink]="['/updateAnnounce', annonce.id]"
+          <a *ngIf="annonce.status === 'ACTIVE'" [routerLink]="['/updateAnnounce', annonce.id]"
              class="text-blue-600 hover:text-blue-800 font-semibold">
             Edit
+          </a>
+          <a *ngIf="annonce.status === 'ACTIVE'" [routerLink]="['/consultation', annonce.id]"
+             class="text-blue-600 hover:text-blue-800 font-semibold">
+            Consultations
           </a>
         </td>
       </tr>

@@ -1,0 +1,34 @@
+<div *ngIf="announce" class="announce-details">
+  <a [routerLink]="['/announcePage', announce.id]">
+    <h2>{{ announce.title }}</h2>
+  </a>
+
+  <p><strong>Category:</strong> {{ announce.category }}</p>
+  <p><strong>Price:</strong> {{ announce.price }} USD</p>
+  <p><strong>Location:</strong> {{ announce.location }}</p>
+</div>
+
+<div *ngIf="consultations.length > 0" class="consultations">
+  <h3>Consultations</h3>
+  <div *ngFor="let consultation of consultations" class="consultation-card">
+    <p><strong>Responder:</strong> {{ consultation.responder.name }}</p>
+    <p><strong>Email:</strong> {{ consultation.responder.email }}</p>
+    <p><strong>Phone:</strong> {{ consultation.responder.phoneNumber }}</p>
+    <p><strong>Response Date:</strong> {{ consultation.responseDate | date:'short' }}</p>
+    <p><strong>Message:</strong> {{ consultation.message }}</p>
+
+    <div *ngIf="consultation.accepted === null" class="actions">
+      <button (click)="approveConsultation(consultation.id)" class="approve-btn">Approve</button>
+      <button (click)="rejectConsultation(consultation.id)" class="reject-btn">Reject</button>
+      <button (click)="deleteConsultation(consultation.id)" class="reject-btn">Delete</button>
+    </div>
+
+    <button *ngIf="consultation.accepted === true" class="project-btn">Project</button>
+  </div>
+</div>
+
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="page === 0">Previous</button>
+  <span>Page {{ page + 1 }} of {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="page >= totalPages - 1">Next</button>
+</div>
