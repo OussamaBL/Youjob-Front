@@ -87,4 +87,8 @@ export class ConsultationService {
       })
     );
   }
+
+  fetchMesConsultations(userID: number | null, page: number, size: number): Observable<PaginatedResponse<Consultation>> {
+    return this.http.get<PaginatedResponse<Consultation>>(`${this.apiUrl}/annonceResponder/${userID}?page=${page}&size=${size}`);
+  }
 }

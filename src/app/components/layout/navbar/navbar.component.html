@@ -15,10 +15,20 @@
           class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-colors duration-300">
           Home
         </a>
+        <a
+          routerLink="/announceSearch"
+          class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-colors duration-300">
+          Search Annonces
+        </a>
         <a *ngIf="isAuthenticate() && (userRole === 'BUSINESS' || userRole === 'CUSTOMER')"
            routerLink="/announce"
            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-colors duration-300">
-          Annonce
+          Gerer les Annonces
+        </a>
+        <a *ngIf="isAuthenticate() && (userRole === 'HANDYMAN')"
+           routerLink="/mesConsultation"
+           class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-colors duration-300">
+          Mes Consultations
         </a>
         <a
           routerLink="/about"
@@ -50,11 +60,6 @@
            routerLink="/historyAnnounce"
            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-colors duration-300">
           Archived Announce
-        </a>
-        <a *ngIf="(userRole === 'BUSINESS' || userRole === 'CUSTOMER')"
-           routerLink="/consultation"
-           class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:border-blue-600 hover:text-blue-600 transition-colors duration-300">
-          Consultation
         </a>
         <a
           (click)="logOut()"
