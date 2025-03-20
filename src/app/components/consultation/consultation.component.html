@@ -1,34 +1,80 @@
-<div *ngIf="announce" class="announce-details">
-  <a [routerLink]="['/announcePage', announce.id]">
-    <h2>{{ announce.title }}</h2>
-  </a>
+<app-navbar />
+<div class="container mx-auto p-6">
+  <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Consultations Annonces</h1>
 
-  <p><strong>Category:</strong> {{ announce.category }}</p>
-  <p><strong>Price:</strong> {{ announce.price }} USD</p>
-  <p><strong>Location:</strong> {{ announce.location }}</p>
-</div>
 
-<div *ngIf="consultations.length > 0" class="consultations">
-  <h3>Consultations</h3>
-  <div *ngFor="let consultation of consultations" class="consultation-card">
-    <p><strong>Responder:</strong> {{ consultation.responder.name }}</p>
-    <p><strong>Email:</strong> {{ consultation.responder.email }}</p>
-    <p><strong>Phone:</strong> {{ consultation.responder.phoneNumber }}</p>
-    <p><strong>Response Date:</strong> {{ consultation.responseDate | date:'short' }}</p>
-    <p><strong>Message:</strong> {{ consultation.message }}</p>
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center py-10">
+    <div class="spinner-border animate-spin h-10 w-10 border-t-4 border-blue-500 rounded-full"></div>
+  </div>
 
-    <div *ngIf="consultation.accepted === null" class="actions">
-      <button (click)="approveConsultation(consultation.id)" class="approve-btn">Approve</button>
-      <button (click)="rejectConsultation(consultation.id)" class="reject-btn">Reject</button>
-      <button (click)="deleteConsultation(consultation.id)" class="reject-btn">Delete</button>
+  <!-- Table -->
+  <div *ngIf="!loading" class="overflow-x-auto shadow-lg rounded-lg">
+
+    <div *ngIf="announce" class="announce-details">
+      <a [routerLink]="['/announcePage', announce.id]">
+        <h2>{{ announce.title }}</h2>
+      </a>
+
+      <p><strong>Category:</strong> {{ announce.category }}</p>
+      <p><strong>Price:</strong> {{ announce.price }} USD</p>
+      <p><strong>Location:</strong> {{ announce.location }}</p>
     </div>
 
-    <button *ngIf="consultation.accepted === true" class="project-btn">Project</button>
+    <table class="w-full border-collapse bg-white shadow-md rounded-lg">
+      <thead class="bg-blue-500 text-white uppercase text-sm font-semibold">
+      <tr>
+        <th class="p-3 text-left">Responder</th>
+        <th class="p-3 text-left">Email</th>
+        <th class="p-3 text-left">Phone</th>
+        <th class="p-3 text-left">Response Date</th>
+        <th class="p-3 text-left">Message</th>
+        <th class="p-3 text-left"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let consultation of consultations" class="border-b hover:bg-gray-100">
+        <td class="p-3">{{ consultation.responder.name }}</td>
+        <td class="p-3">{{ consultation.responder.email }}</td>
+        <td class="p-3">{{ consultation.responder.phoneNumber }}</td>
+        <td class="p-3">{{ consultation.responseDate | date:'medium' }}</td>
+        <td class="p-3">{{ consultation.message }}</td>
+
+        <td class="p-3">
+          <div *ngIf="consultation.accepted === null" class="actions">
+            <button (click)="approveConsultation(consultation.id)" class="text-blue-500 hover:text-red-700 font-semibold">Approve</button>
+            <button (click)="rejectConsultation(consultation.id)" class="text-red-500 hover:text-red-700 font-semibold">Reject</button>
+            <button (click)="deleteConsultation(consultation.id)" class="text-green-500 hover:text-red-700 font-semibold">Delete</button>
+          </div>
+
+          <a *ngIf="consultation.accepted === true" [routerLink]="['/project', consultation.id]" class="project-btn">Project</a>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!loading" class="flex justify-between items-center mt-6">
+    <button
+      (click)="prevPage()"
+      [disabled]="page === 0"
+      class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+    >
+      Previous
+    </button>
+
+    <span class="text-lg font-semibold"> Page {{ page + 1 }} of {{ totalPages }} </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page >= totalPages - 1"
+      class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+    >
+      Next
+    </button>
   </div>
 </div>
 
-<div class="pagination">
-  <button (click)="prevPage()" [disabled]="page === 0">Previous</button>
-  <span>Page {{ page + 1 }} of {{ totalPages }}</span>
-  <button (click)="nextPage()" [disabled]="page >= totalPages - 1">Next</button>
-</div>
+<app-footer />

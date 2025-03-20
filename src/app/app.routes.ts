@@ -16,6 +16,8 @@ import {HistoryAnnounceComponent} from "./components/history-annonce/history-ann
 import {AnnouncePageComponent} from "./components/announce-page/announce-page.component";
 import {AnnounceListComponentComponent} from "./components/annonce-list-component/announce-list-component.component";
 import {ConsultationComponent} from "./components/consultation/consultation.component";
+import {MesConsultationComponent} from "./components/mes-consultation/mes-consultation.component";
+import {handymanGuard} from "./guards/handyman.guard";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -56,6 +58,9 @@ export const routes: Routes = [
   },
   { path: 'consultation/:id', component: ConsultationComponent ,
     canActivate: [annonceGuard]
+  },
+  { path: 'mesConsultation', component: MesConsultationComponent ,
+    canActivate: [handymanGuard]
   },
 
 ];

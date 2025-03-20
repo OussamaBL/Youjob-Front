@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import {ConsultationService} from "../../services/consultation/consultation.service";
 import {Consultation} from "../../models/consultation.model";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {NavbarComponent} from "../layout/navbar/navbar.component";
+import {FooterComponent} from "../layout/footer/footer.component";
 
 @Component({
   selector: 'app-consultation',
@@ -16,7 +18,9 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
     NgIf,
     NgForOf,
     DatePipe,
-    RouterLink
+    RouterLink,
+    NavbarComponent,
+    FooterComponent
   ],
   templateUrl: './consultation.component.html',
   styleUrl: './consultation.component.css'
@@ -72,7 +76,7 @@ export class ConsultationComponent implements OnInit{
         this.consultations = data.content;
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
-        this.loading = false; // Set loading to false after data is fetched
+        this.loading = false;
       },
       error: (err) => {
         Sal.fire({
@@ -80,7 +84,7 @@ export class ConsultationComponent implements OnInit{
           title: 'Oops...',
           text: err.message,
         });
-        this.loading = false; // Set loading to false in case of error
+        this.loading = false;
       }
     });
   }
