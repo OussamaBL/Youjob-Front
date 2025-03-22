@@ -35,7 +35,6 @@ export class ConsultationService {
       })
     );
   }
-
   fetchConsultations(announceID: string | null, page: number, size: number): Observable<PaginatedResponse<Consultation>> {
     return this.http.get<PaginatedResponse<Consultation>>(`${this.apiUrl}/ResponderAnnonce/${announceID}?page=${page}&size=${size}`);
   }
@@ -87,8 +86,24 @@ export class ConsultationService {
       })
     );
   }
-
   fetchMesConsultations(userID: number | null, page: number, size: number): Observable<PaginatedResponse<Consultation>> {
     return this.http.get<PaginatedResponse<Consultation>>(`${this.apiUrl}/annonceResponder/${userID}?page=${page}&size=${size}`);
   }
+  fetchConsultationByID(consultationID: string | null):Observable<Consultation>{
+    return this.http.get<Consultation>(`${this.apiUrl}/getProject/${consultationID}`).pipe(
+      catchError(error => {
+        let errorMessage = 'An error occurred. Please try again.';
+        if (error.error) {
+          try {
+            const errorObj = typeof error.error === 'string' ? JSON.parse(error.error) : error.error;
+            errorMessage = errorObj.error || errorMessage;
+          } catch (e) {
+            console.error('Error parsing response:', e);
+          }
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
 }
