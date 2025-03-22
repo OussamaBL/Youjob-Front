@@ -1,0 +1,51 @@
+<app-navbar />
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Project Details</h2>
+
+  <div class="card shadow p-4">
+    <!-- Announce Details -->
+    <h4 class="text-primary">Announce Information</h4>
+    <p><strong>Title:</strong> {{ consultation.annonce.title }}</p>
+    <p><strong>Description:</strong> {{ consultation.annonce.description }}</p>
+    <p><strong>Category:</strong> {{ consultation.annonce.category }}</p>
+    <p><strong>Price:</strong> ${{ consultation.annonce.price }}</p>
+    <p><strong>Location:</strong> {{ consultation.annonce.location }}</p>
+
+    <!-- Created By -->
+    <h4 class="text-secondary">Created By</h4>
+    <p><strong>Name:</strong> {{ consultation.annonce.createdBy.name }}</p>
+    <p><strong>Email:</strong> {{ consultation.annonce.createdBy.email }}</p>
+    <p><strong>Phone:</strong> {{ consultation.annonce.createdBy.phoneNumber }}</p>
+
+    <!-- Responder Details -->
+    <h4 class="text-success">Responder Information</h4>
+    <p><strong>Name:</strong> {{ consultation.responder.name }}</p>
+    <p><strong>Email:</strong> {{ consultation.responder.email }}</p>
+    <p><strong>Phone:</strong> {{ consultation.responder.phoneNumber }}</p>
+
+    <!-- Project Status -->
+    <h4 class="text-warning">Project Status</h4>
+    <p><strong>Status:</strong> {{ consultation.annonce.project.progress }}</p>
+
+    <!-- Conditional Buttons -->
+    <div class="mt-3">
+      <ng-container *ngIf="user?.role === 'HANDYMAN'">
+        <button *ngIf="consultation.annonce.project.progress === 'PENDING'"
+                (click)="confirmProject(consultation.annonce.project.id)"
+                class="btn btn-primary">Confirm Project</button>
+        <p *ngIf="consultation.annonce.project.progress === 'IN_PROGRESS'">Handyman or Customer will complete the project</p>
+        <p *ngIf="consultation.annonce.project.progress === 'COMPLETED'" class="text-success">Project Archived and Completed</p>
+      </ng-container>
+
+      <ng-container *ngIf="user?.role === 'CUSTOMER' || user?.role === 'BUSINESS'">
+        <p *ngIf="consultation.annonce.project.progress === 'PENDING'" class="text-info">The HANDYMAN will confirm the project</p>
+        <button *ngIf="consultation.annonce.project.progress === 'IN_PROGRESS'"
+                (click)="completeProject(consultation.annonce.project.id)"
+                class="btn btn-success">Mark as Completed</button>
+        <p *ngIf="consultation.annonce.project.progress === 'COMPLETED'" class="text-success">Project Archived and Completed</p>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<app-footer />

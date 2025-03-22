@@ -18,6 +18,7 @@ import {AnnounceListComponentComponent} from "./components/annonce-list-componen
 import {ConsultationComponent} from "./components/consultation/consultation.component";
 import {MesConsultationComponent} from "./components/mes-consultation/mes-consultation.component";
 import {handymanGuard} from "./guards/handyman.guard";
+import {ProjectComponent} from "./components/project/project.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -62,5 +63,7 @@ export const routes: Routes = [
   { path: 'mesConsultation', component: MesConsultationComponent ,
     canActivate: [handymanGuard]
   },
-
+  { path: 'project/:id', component: ProjectComponent ,
+    canActivate: [authGuard]
+  },
 ];
