@@ -5,12 +5,12 @@ import {NavbarComponent} from "../layout/navbar/navbar.component";
 import {FooterComponent} from "../layout/footer/footer.component";
 import {AuthService} from "../../services/auth/auth.service";
 import Swal from "sweetalert2";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-forget-password',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NavbarComponent, FooterComponent, NgIf],
+  imports: [ReactiveFormsModule, RouterModule, NavbarComponent, FooterComponent, NgIf, NgClass],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.css'
 })

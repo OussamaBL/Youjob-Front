@@ -11,6 +11,7 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {NavbarComponent} from "../layout/navbar/navbar.component";
 import {FooterComponent} from "../layout/footer/footer.component";
 
+
 @Component({
   selector: 'app-consultation',
   standalone: true,
@@ -35,6 +36,13 @@ export class ConsultationComponent implements OnInit{
   size = 5;
   loading: boolean = false;
   errorMessage = '';
+
+  totalItems: number = 0;
+  totalConsultations: number = 0;
+  approvedCount: number = 0;
+  pendingCount: number = 0;
+  displayedRangeStart: number = 0;
+  displayedRangeEnd: number = 0;
   constructor(private route: ActivatedRoute,private announceService: AnnonceService,private consultationService :ConsultationService, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -68,7 +76,30 @@ export class ConsultationComponent implements OnInit{
       }
     });
   }
+  calculateCounts() {
+    if (!this.consultations) {
+      this.totalConsultations = 0;
+      this.approvedCount = 0;
+      this.pendingCount = 0;
+      return;
+    }
 
+    this.totalConsultations = this.consultations.length;
+    this.approvedCount = this.consultations.filter(c => c.accepted === true).length;
+    this.pendingCount = this.consultations.filter(c => c.accepted === null).length;
+  }
+
+  calculateDisplayedRange() {
+    if (!this.consultations || this.consultations.length === 0) {
+      this.displayedRangeStart = 0;
+      this.displayedRangeEnd = 0;
+      return;
+    }
+
+    const pageSize = 10; // Adjust based on your actual page size
+    this.displayedRangeStart = this.page * pageSize + 1;
+    this.displayedRangeEnd = Math.min((this.page + 1) * pageSize, this.totalItems || this.totalConsultations);
+  }
   fetchConsultation(): void {
     this.loading = true;
     this.consultationService.fetchConsultations(this.announceId, this.page, this.size).subscribe({
@@ -76,6 +107,10 @@ export class ConsultationComponent implements OnInit{
         this.consultations = data.content;
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
+        this.totalItems = data.totalElements;
+
+        this.calculateCounts();
+        this.calculateDisplayedRange();
         this.loading = false;
       },
       error: (err) => {
@@ -168,4 +203,6 @@ export class ConsultationComponent implements OnInit{
       }
     });
   }
+
+  protected readonly length = length;
 }

@@ -35,7 +35,24 @@ export class MesConsultationComponent implements OnInit{
   size = 5;
   loading: boolean = false;
   errorMessage = '';
+  pendingCount: number = 0;
+  acceptedCount: number = 0;
+  rejectedCount: number = 0;
+
   constructor(private route: ActivatedRoute,private announceService: AnnonceService,private consultationService :ConsultationService, private router: Router, private authService: AuthService) {}
+
+updateCounts() {
+  if (!this.consultations) {
+    this.pendingCount = 0;
+    this.acceptedCount = 0;
+    this.rejectedCount = 0;
+    return;
+  }
+
+  this.pendingCount = this.consultations.filter(c => c.accepted === null).length;
+  this.acceptedCount = this.consultations.filter(c => c.accepted === true).length;
+  this.rejectedCount = this.consultations.filter(c => c.accepted === false).length;
+}
 
   ngOnInit(): void {
     this.authService.getId().subscribe((id) => {
@@ -58,6 +75,7 @@ export class MesConsultationComponent implements OnInit{
         this.consultations = data.content;
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
+        this.updateCounts();
         this.loading = false;
       },
       error: (err) => {
@@ -108,4 +126,6 @@ export class MesConsultationComponent implements OnInit{
     });
   }
 
+  protected readonly length = length;
+  protected readonly Math = Math;
 }

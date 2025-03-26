@@ -3,7 +3,7 @@ import {Annonce} from "../../models/annonce.model";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AnnonceService} from "../../services/annonce/annonce.service";
 import Swal from "sweetalert2";
-import {NgClass, NgIf} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgClass, NgIf} from "@angular/common";
 import {NavbarComponent} from "../layout/navbar/navbar.component";
 import {FooterComponent} from "../layout/footer/footer.component";
 import {User} from "../../models/User.model";
@@ -18,7 +18,9 @@ import {ConsultationService} from "../../services/consultation/consultation.serv
     NgClass,
     RouterLink,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    CurrencyPipe,
+    DatePipe
   ],
   templateUrl: './announce-page.component.html',
   styleUrl: './announce-page.component.css'
@@ -151,5 +153,8 @@ export class AnnouncePageComponent implements OnInit{
         });
       }
     });
+  }
+  goBack(): void {
+    window.history.back();
   }
 }

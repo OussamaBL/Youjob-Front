@@ -6,7 +6,7 @@ import {Annonce} from "../../models/annonce.model";
 import Swal from "sweetalert2";
 import {NavbarComponent} from "../layout/navbar/navbar.component";
 import {FooterComponent} from "../layout/footer/footer.component";
-import {NgIf} from "@angular/common";
+import {DatePipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-update-annonce',
@@ -15,7 +15,8 @@ import {NgIf} from "@angular/common";
     NavbarComponent,
     FooterComponent,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   templateUrl: './update-announce.component.html',
   styleUrl: './update-announce.component.css'

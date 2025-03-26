@@ -83,4 +83,5 @@ export class HistoryAnnounceComponent {
     }
   }
 
+  protected readonly Math = Math;
 }
