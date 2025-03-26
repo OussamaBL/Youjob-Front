@@ -1,36 +1,249 @@
+<app-navbar />
 
-<div class="filter-section">
-  <label>Category:</label>
-  <select [formControl]="selectedCategory">
-    <option value="">All Categories</option>
-    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-    <option [value]="'Electronics'">Electronics</option>
-  </select>
+<!-- Main Container -->
+<div class="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Browse Announcements
+      </h1>
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+        Find the perfect opportunities that match your interests
+      </p>
+    </div>
 
-  <label >Location:</label>
-  <select [formControl]="selectedLocation">
-    <option value="">All Locations</option>
-    <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
-  </select>
+    <!-- Filter Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-lg font-medium text-gray-900 mb-4">Filter Results</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Category Filter -->
+        <div class="space-y-2">
+          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+          <div class="relative">
+            <select
+              id="category"
+              [formControl]="selectedCategory"
+              class="block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm"
+            >
+              <option value="">All Categories</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              <option [value]="'Electronics'">Electronics</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
 
-<!--  <button (click)="filterAnnounces()">Filter</button>-->
-</div>
+        <!-- Location Filter -->
+        <div class="space-y-2">
+          <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+          <div class="relative">
+            <select
+              id="location"
+              [formControl]="selectedLocation"
+              class="block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm"
+            >
+              <option value="">All Locations</option>
+              <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="announce-list">
-  <div *ngFor="let announce of announces" class="announce-card">
-    <a [routerLink]="['/announcePage', announce.id]">
-      {{ announce.title }}
-    </a>
-    <p><strong>Category:</strong> {{ announce.category }}</p>
-    <p><strong>Location:</strong> {{ announce.location }}</p>
-    <p><strong>Description:</strong> {{ announce.description }}</p>
+      <!-- Search Button (Optional) -->
+      <div class="mt-6 flex justify-end">
+        <button
+          type="button"
+          (click)="filterAnnounces()"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Apply Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-semibold text-gray-900">
+        {{ announces.length }} Results
+      </h2>
+      <!-- Sort Dropdown (Optional) -->
+      <div class="relative inline-block text-left">
+        <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+          <option>Most Recent</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Announcements Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <!-- Announcement Card -->
+      <div *ngFor="let announce of announces" class="bg-white overflow-hidden shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300">
+        <!-- Card Image (Placeholder) -->
+        <div class="h-48 w-full bg-gray-200 relative">
+
+          <div class="absolute top-0 right-0 mt-2 mr-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              {{ announce.category }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Card Content -->
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <h3 class="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
+              <a [routerLink]="['/announcePage', announce.id]" class="hover:underline">
+                {{ announce.title }}
+              </a>
+            </h3>
+            <!-- Price (if applicable) -->
+            <span *ngIf="announce.price" class="text-lg font-bold text-blue-600">
+              {{ announce.price | currency }}
+            </span>
+          </div>
+
+          <!-- Location -->
+          <div class="mt-2 flex items-center text-sm text-gray-500">
+            <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+            </svg>
+            {{ announce.location }}
+          </div>
+
+          <!-- Description -->
+          <p class="mt-3 text-sm text-gray-600 line-clamp-3">
+            {{ announce.description }}
+          </p>
+
+          <!-- Date & View Details -->
+          <div class="mt-4 flex items-center justify-between">
+            <div class="text-sm text-gray-500">
+              <time *ngIf="announce.createdDate" [dateTime]="announce.createdDate">{{ announce.createdDate | date }}</time>
+            </div>
+            <a [routerLink]="['/announcePage', announce.id]" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500">
+              View details
+              <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State (when no results) -->
+      <div *ngIf="announces.length === 0" class="col-span-full py-12 flex flex-col items-center justify-center text-center">
+        <svg class="h-16 w-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900">No announcements found</h3>
+        <p class="mt-1 text-sm text-gray-500">Try adjusting your search filters to find what you're looking for.</p>
+        <button
+          (click)="resetFilters()"
+          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Reset Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-lg shadow-sm">
+      <div class="flex flex-1 justify-between sm:hidden">
+        <button
+          (click)="changePage(-1)"
+          [disabled]="currentPage === 1"
+          [ngClass]="{'bg-gray-100 text-gray-400 cursor-not-allowed': currentPage === 1}"
+          class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Previous
+        </button>
+        <button
+          (click)="changePage(1)"
+          [disabled]="currentPage === totalPages"
+          [ngClass]="{'bg-gray-100 text-gray-400 cursor-not-allowed': currentPage === totalPages}"
+          class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Next
+        </button>
+      </div>
+      <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-gray-700">
+            Showing
+            <span class="font-medium">{{ (currentPage - 1) * itemsPerPage + 1 }}</span>
+            to
+            <span class="font-medium">{{ Math.min(currentPage * itemsPerPage, totalItems) }}</span>
+            of
+            <span class="font-medium">{{ totalItems }}</span>
+            results
+          </p>
+        </div>
+        <div>
+          <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+            <button
+              (click)="changePage(-1)"
+              [disabled]="currentPage === 1"
+              class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              [ngClass]="{'hover:bg-gray-50': currentPage !== 1, 'opacity-50 cursor-not-allowed': currentPage === 1}"
+            >
+              <span class="sr-only">Previous</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+              </svg>
+            </button>
+
+            <!-- Page Numbers -->
+            <ng-container *ngFor="let page of getPaginationRange()">
+              <button
+                *ngIf="page !== '...'"
+                (click)="goToPage(page)"
+                [ngClass]="{
+      'bg-blue-50 text-blue-600 border-blue-500': currentPage === page,
+      'text-gray-900': currentPage !== page
+    }"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              >
+                {{ page }}
+              </button>
+
+              <span *ngIf="page === '...'" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300">
+    ...
+  </span>
+            </ng-container>
+
+
+
+            <button
+              (click)="changePage(1)"
+              [disabled]="currentPage === totalPages"
+              class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              [ngClass]="{'hover:bg-gray-50': currentPage !== totalPages, 'opacity-50 cursor-not-allowed': currentPage === totalPages}"
+            >
+              <span class="sr-only">Next</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="pagination">
-  <button (click)="changePage(-1)" [disabled]="currentPage === 1">Previous</button>
-  <span>Page {{ currentPage }} of {{ totalPages }}</span>
-  <button (click)="changePage(1)" [disabled]="currentPage === totalPages">Next</button>
 </div>
 
 <app-footer/>

@@ -14,11 +14,12 @@ import {annonceGuard} from "./guards/annonce.guard";
 import {UpdateAnnounceComponent} from "./components/update-annonce/update-announce.component";
 import {HistoryAnnounceComponent} from "./components/history-annonce/history-annonce.component";
 import {AnnouncePageComponent} from "./components/announce-page/announce-page.component";
-import {AnnounceListComponentComponent} from "./components/annonce-list-component/announce-list-component.component";
+import {AnnounceListComponent} from "./components/annonce-list-component/announce-list-component.component";
 import {ConsultationComponent} from "./components/consultation/consultation.component";
 import {MesConsultationComponent} from "./components/mes-consultation/mes-consultation.component";
 import {handymanGuard} from "./guards/handyman.guard";
 import {ProjectComponent} from "./components/project/project.component";
+import {AboutUsComponent} from "./components/about-us/about-us.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent ,
@@ -54,7 +55,7 @@ export const routes: Routes = [
   { path: 'announcePage/:id', component: AnnouncePageComponent ,
     /*canActivate: [annonceGuard]*/
   },
-  { path: 'announceSearch', component: AnnounceListComponentComponent ,
+  { path: 'announceSearch', component: AnnounceListComponent ,
     /*canActivate: [annonceGuard]*/
   },
   { path: 'consultation/:id', component: ConsultationComponent ,
@@ -65,5 +66,7 @@ export const routes: Routes = [
   },
   { path: 'project/:id', component: ProjectComponent ,
     canActivate: [authGuard]
+  },
+  { path: 'aboutUs', component: AboutUsComponent ,
   },
 ];

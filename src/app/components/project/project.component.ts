@@ -10,7 +10,7 @@ import Sal from "sweetalert2";
 import {NavbarComponent} from "../layout/navbar/navbar.component";
 import {FooterComponent} from "../layout/footer/footer.component";
 import {User} from "../../models/User.model";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf, NgStyle} from "@angular/common";
 import {ProjectService} from "../../services/project/project.service";
 
 @Component({
@@ -19,7 +19,9 @@ import {ProjectService} from "../../services/project/project.service";
   imports: [
     NavbarComponent,
     FooterComponent,
-    NgIf
+    NgIf,
+    NgClass,
+    NgStyle
   ],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
@@ -129,5 +131,4 @@ export class ProjectComponent implements OnInit{
       }
     });
   }
-
 }

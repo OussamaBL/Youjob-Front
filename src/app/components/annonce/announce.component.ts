@@ -107,4 +107,60 @@ export class AnnounceComponent implements OnInit{
       }
     });
   }
+  getPageNumbers(): Array<{ type: 'number' | 'ellipsis', value: number | string }> {
+    const pageNumbers: Array<{ type: 'number' | 'ellipsis', value: number | string }> = [];
+    const totalVisiblePages = 5;
+
+    if (this.totalPages <= totalVisiblePages) {
+      // Show all pages if there are few pages
+      for (let i = 1; i <= this.totalPages; i++) {
+        pageNumbers.push({ type: 'number', value: i });
+      }
+    } else {
+      // Always show first page
+      pageNumbers.push({ type: 'number', value: 1 });
+
+      // Calculate start and end of visible pages
+      let startPage = Math.max(2, this.page - 1);
+      let endPage = Math.min(this.totalPages - 1, startPage + totalVisiblePages - 3);
+
+      // Adjust if we're near the end
+      if (endPage - startPage < totalVisiblePages - 3) {
+        startPage = Math.max(2, this.totalPages - totalVisiblePages + 2);
+      }
+
+      // Add ellipsis if needed before middle pages
+      if (startPage > 2) {
+        pageNumbers.push({ type: 'ellipsis', value: '...' });
+      }
+
+      // Add middle pages
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push({ type: 'number', value: i });
+      }
+
+      // Add ellipsis if needed after middle pages
+      if (endPage < this.totalPages - 1) {
+        pageNumbers.push({ type: 'ellipsis', value: '...' });
+      }
+
+      // Always show last page
+      pageNumbers.push({ type: 'number', value: this.totalPages });
+    }
+
+    return pageNumbers;
+  }
+
+  goToPage(pageNumber: number): void {
+    if (pageNumber >= 0 && pageNumber < this.totalPages) {
+      this.page = pageNumber;
+      // Call your method to load data for this page
+      // this.loadAnnounces();
+    }
+  }
+  get activeAnnouncesCount(): number {
+    return this.announces ? this.announces.filter(a => a.status === 'ACTIVE').length : 0;
+  }
+
+  protected readonly Math = Math;
 }
